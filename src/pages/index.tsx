@@ -6,14 +6,25 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { ChatMessage } from "@/features/chat-message";
 import { Button } from "@/components/ui/button";
 import { useStore } from "@/hooks/useStore";
-import { getMessage } from "@/lib/langchain";
+import { getChatCompletion } from "@/lib/langchain";
 
 export default function Home() {
-  const { message, setMessage } = useStore();
+  const { message, messageHistory, setMessage, addMessageToHistory } =
+    useStore();
   const model = "Mistral";
 
   const handleSendMessage = async () => {
-    const msg = await getMessage(message);
+    addMessageToHistory({
+      body: message?.body ?? "",
+      author: "you",
+    });
+    const msg = await getChatCompletion(message?.body ?? "");
+
+    addMessageToHistory({
+      body: msg.response,
+      author: model,
+    });
+
     console.log(msg);
   };
 
@@ -27,16 +38,25 @@ export default function Home() {
       <Layout>
         <div className="flex h-full w-full flex-col justify-between p-4">
           <ScrollArea className="min-h-[80vh]">
-            <ChatMessage author="you">
-              Tell me about the top 10 productivity tools of 2023?
-            </ChatMessage>
-            <ChatMessage author={model}>I don&apos;t know.</ChatMessage>
+            {
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              messageHistory!.map((msg, index) => (
+                <ChatMessage key={index} author={msg.author}>
+                  {msg.body}
+                </ChatMessage>
+              ))
+            }
           </ScrollArea>
           <div className="grid w-full gap-2">
             <Textarea
               className="w-full"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
+              value={message?.body}
+              onChange={(e) =>
+                setMessage({
+                  body: e.target.value,
+                  author: "you",
+                })
+              }
               placeholder={`Message ${model}...`}
             />
             <Button onClick={handleSendMessage}>Send message</Button>
