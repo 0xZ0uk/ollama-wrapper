@@ -3,11 +3,12 @@ import React from "react";
 
 interface ChatCardProps {
   title: string;
+  onClick: () => void;
 }
 
-export const ChatCard: React.FC<ChatCardProps> = ({ title }) => {
+export const ChatCard: React.FC<ChatCardProps> = ({ title, onClick }) => {
   return (
-    <Card className="hover:border-primary cursor-pointer">
+    <Card className="hover:border-primary cursor-pointer" onClick={onClick}>
       <CardHeader className="p-4">
         <CardTitle className="text-base">{title}</CardTitle>
       </CardHeader>
