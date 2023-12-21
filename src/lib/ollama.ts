@@ -20,7 +20,7 @@ export const createChat = (
   });
 
   const ollamaChat = new ChatOllama({
-    baseUrl: "http://localhost:11434", // Default value
+    baseUrl: env.NEXT_PUBLIC_OLLAMA_URL, // Default value
     model,
   });
 

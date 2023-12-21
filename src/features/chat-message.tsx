@@ -1,4 +1,5 @@
 import React from "react";
+import Markdown from "react-markdown";
 
 interface ChatMessageProps {
   author: string;
@@ -14,7 +15,7 @@ export const ChatMessage: React.FC<ChatMessageProps> = ({
       <p className="text-muted-foreground text-xs tracking-widest">
         {author.toUpperCase()}
       </p>
-      <div>{children}</div>
+      <Markdown>{children}</Markdown>
     </div>
   );
 };

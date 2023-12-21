@@ -22,7 +22,14 @@ export default function Home() {
 
     addMessageToChat(currentChat?.id, message);
 
+    setMessage({
+      body: "",
+      author: "you",
+    });
+
     const msg = await createChatCompletion(message?.body);
+
+    console.log(msg);
 
     if (msg === undefined) return;
 
@@ -41,7 +48,7 @@ export default function Home() {
       </Head>
       <Layout>
         <div className="flex h-full w-full flex-col justify-between p-4">
-          <ScrollArea className="min-h-[80vh]">
+          <ScrollArea className="h-[80vh]">
             <DebugBox model={currentChat?.model ?? ""} />
             {chats
               .find((chat) => chat.id === currentChat?.id)
@@ -61,6 +68,11 @@ export default function Home() {
                   author: "you",
                 })
               }
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  handleSendMessage();
+                }
+              }}
               placeholder={`Message ${currentChat?.model}...`}
             />
             <Button onClick={handleSendMessage}>Send message</Button>

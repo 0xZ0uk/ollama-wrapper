@@ -33,6 +33,14 @@ export const Sidebar: React.FC = () => {
       chain: ollamaChat,
       messages: [],
     });
+
+    setCurrentChat({
+      id,
+      title: "New Chat",
+      model: model,
+      chain: ollamaChat,
+      messages: [],
+    });
   };
 
   return (
@@ -41,7 +49,7 @@ export const Sidebar: React.FC = () => {
         <h2 className="text-xl font-bold">OllamaWrapper</h2>
         <ModeToggle />
       </div>
-      <div className="w-full space-y-1 p-4">
+      <div className="w-full space-y-2 p-4">
         <Select
           value={model}
           onValueChange={(value) => setModel(value as ChatModel)}
